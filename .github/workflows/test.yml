@@ -1,0 +1,29 @@
+name: Run Tests and Save Report
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js (or Python etc.)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests and generate report
+        run: |
+          mkdir -p reports
+          npm test > reports/test-report.txt
+
+      - name: Upload test report as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: reports/test-report.txt
